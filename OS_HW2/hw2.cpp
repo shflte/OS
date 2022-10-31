@@ -1,6 +1,6 @@
 #include <iostream>
-# include <thread>
-# include <unistd.h>
+#include <pthread.h>
+#include <unistd.h>
 
 #define NUM_THREAD 20
 
@@ -23,6 +23,8 @@ void* add_mul(void* arg)
 {
     // Each thread computes sum of 1/4th of array
     int thread_part = part++;
+
+    cout << "thread part: " << thread_part << endl;
 
     for (int i = thread_part * (MAX / NUM_THREAD); i < (thread_part + 1) * (MAX / NUM_THREAD); i++) {
         // addition
@@ -63,6 +65,10 @@ int main()
     // join threads
     for (int i = 0; i < NUM_THREAD; i++)
         pthread_join(threads[i], NULL);
+
+    for (int i = 0; i < NUM_THREAD; i++) {
+        cout << "add: " << sum_add[i] << "; mult: " <<  sum_mul[i] << endl;
+    }
 
     for (int i = 0; i < NUM_THREAD; i++) {
         sum_C += sum_add[i];
